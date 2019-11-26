@@ -9805,22 +9805,22 @@ Prefab:
         type: 2}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 228488f6d205b2c4eb8ebb1c336b2bc5,
+      objectReference: {fileID: 21300000, guid: 3b329c88a16cd0e4f8f2ac883f2d1e43,
         type: 3}
     - target: {fileID: 224791589242484318, guid: 20d4c7b43c8d80b46bc9f84fe9358af5,
         type: 2}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 224791589242484318, guid: 20d4c7b43c8d80b46bc9f84fe9358af5,
         type: 2}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 114844681382654688, guid: 20d4c7b43c8d80b46bc9f84fe9358af5,
         type: 2}
       propertyPath: m_Text
-      value: "\u30D0\u30A4\u30D6\u4E2D"
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 20d4c7b43c8d80b46bc9f84fe9358af5, type: 2}
