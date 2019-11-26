@@ -522,7 +522,7 @@ namespace Kaimin.Managers
         {
             Boolean ret=false;
 
-#if UNITY_ANDROID
+#if UNITY_ANDROID && !UNITY_EDITOR
             using (AndroidJavaObject ajo = new AndroidJavaObject(_packageNameMyApplication))
             {
                 ret = ajo.CallStatic<Boolean>(

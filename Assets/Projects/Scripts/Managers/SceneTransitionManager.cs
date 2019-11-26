@@ -44,7 +44,8 @@ public class SceneTransitionManager : MonoBehaviour {
 		BTConnectPrepare,	//デバイス接続準備
 		BTConnect,			//デバイス接続
 		PrivacyPolicy,		//プライバシーポリシー
-		TermsOfUse			//利用規約
+		TermsOfUse,			//利用規約
+        GraphCompare        //比較のグラフ
 	};
 
 	/// <summary>
@@ -152,7 +153,9 @@ public class SceneTransitionManager : MonoBehaviour {
 		case LoadScene.BTConnectPrepare:
 			return LoadScene.Setting;
 		case LoadScene.BTConnect:
-			return LoadScene.BTConnectPrepare;
+			return LoadScene.BTConnectPrepare;	
+        case LoadScene.GraphCompare:
+			return LoadScene.InitialLunch;
 		case LoadScene.PrivacyPolicy:
 			return LoadScene.InitialLunch;
 		case LoadScene.TermsOfUse:
@@ -278,7 +281,11 @@ public class SceneTransitionManager : MonoBehaviour {
 			sceneName = "BTConnectPrepare";
 			isUseTab = false;
 			break;
-		case LoadScene.BTConnect:
+        case LoadScene.GraphCompare:
+            sceneName = "GraphCompare";
+            isUseTab = true;
+            break;
+        case LoadScene.BTConnect:
 			sceneName = "BTConnect";
 			isUseTab = false;
 			break;

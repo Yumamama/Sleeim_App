@@ -44,6 +44,26 @@ public class SleepHeaderData {
     public int LongestApneaTime { get; }
 
     /// <summary>
+    /// 動作モード  0～3 整数(0：抑制モード(いびき)、1：抑制モード(いびき+無呼吸)、2：モニタリングモード、3：抑制モード（無呼吸）)	
+    /// </summary>
+    public int SleepMode;
+
+    /// <summary>
+    /// バイブレーションの強さ	0～3 整数(0：弱、1：中、2：強)
+    /// </summary>
+    public int VibrationStrength;
+
+    /// <summary>
+    /// いびき検出感度 0～3 整数(0：弱、1：中、2：強)
+    /// </summary>
+    public int SnoreSensitivity;
+
+    /// <summary>
+    /// 無呼吸検出感度 0～3 整数(現在は設定がないため０固定）							
+    /// </summary>
+    public int ApneaSensitivity;
+
+    /// <summary>
     /// 睡眠データ長(Max:1440)
     /// </summary>
     public int DataLength { get; }

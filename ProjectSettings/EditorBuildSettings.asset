@@ -20,9 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Projects/Scenes/Setting/Setting.unity
     guid: 6343eb47520d2774f84d88b0d277b97a
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Projects/Scenes/Additional/TabBar.unity
     guid: ae59e77b5ab8a3d4cb9aa06a29272e47
@@ -107,3 +104,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Projects/Scenes/InitialLunch/BTConnect.unity
     guid: 73886a4d52ac1ae44a423ff317ed77b0
+  - enabled: 1
+    path: Assets/Projects/Scenes/Graph/GraphCompare.unity
+    guid: 7739efade91e0c34ca7e64af804fe2bd

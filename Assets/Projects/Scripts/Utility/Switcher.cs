@@ -29,20 +29,23 @@ public class Switcher : MonoBehaviour {
 		/// </summary>
 		/// <param name="OnElementTourch">On element tourch.</param>
 		public void SetCallbackOnElementTourch (Action<SwitcherElement> OnElementTourch) {
-			ButtonElement.onClick.AddListener (() => OnElementTourch (this));
+            if (ButtonElement != null)
+            {
+                ButtonElement.onClick.AddListener(() => OnElementTourch(this));
+            }
 		}
 
-		/// <summary>
-		///	要素をアクティブ・非アクティブに設定します
-		/// </summary>
-		/// <param name="isActive">If set to <c>true</c> is active.</param>
-		public void SetElementActive (bool isActive) {
-			if (isActive) {
-				HeadElement.color = HeadElementActiveColor;
-				BackElement.color = BackElementActiveColor;
-			} else {
-				HeadElement.color = headElementDisActiveColor;
-				BackElement.color = backElementDisActiveColor;
+        /// <summary>
+        ///	要素をアクティブ・非アクティブに設定します
+        /// </summary>
+        /// <param name="isActive">If set to <c>true</c> is active.</param>
+        public void SetElementActive(bool isActive) {
+            if (HeadElement != null) {
+                HeadElement.color = isActive ? HeadElementActiveColor : headElementDisActiveColor;
+            }
+            
+            if (BackElement != null) {
+				BackElement.color = isActive ? BackElementActiveColor : backElementDisActiveColor;
 			}
 		}
 	}
