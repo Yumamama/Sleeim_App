@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Projects/Scenes/Splash/Splash.unity
+    guid: ad25b15aceae816478a18cfffc98e1dc
+  - enabled: 1
+    path: Assets/Projects/Scenes/InitialLunch/InitialLunch.unity
+    guid: bc7dd6472ec204c46b45fde22cd66074
+  - enabled: 1
+    path: Assets/Projects/Scenes/Home/Home.unity
+    guid: 82f482ed308f9624e90467aff4ef89b6
+  - enabled: 1
+    path: Assets/Projects/Scenes/Graph/Graph.unity
+    guid: 2862e62481fbf8f42a9d74333e00f653
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/Setting.unity
+    guid: 6343eb47520d2774f84d88b0d277b97a
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Projects/Scenes/Additional/TabBar.unity
+    guid: ae59e77b5ab8a3d4cb9aa06a29272e47
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/Profile/Profile.unity
+    guid: 054cb25b8b8d9f04d878abf5bbe13743
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/Profile/Sex.unity
+    guid: 363853366bbad5243b39d992a105671f
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/AlermSetting.unity
+    guid: 712049f89bb6bf24ab86923b3ff7915f
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/DelayTime/AlermDelayTime.unity
+    guid: 057e8727e2e9d654c8b7550d7ca6cf6e
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/CallTime/CallTime.unity
+    guid: ffa8c31198084c6439ae4d56fbc07536
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/CallTime/CallTimeSetting.unity
+    guid: 6fa54b21513aca84182ed3cf5658fd6a
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/DelayTime/DelayTimeSetting.unity
+    guid: 7fb56957c8bb621429fb794a09198293
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/FeedIn/FeedIn.unity
+    guid: fa6b2abb7894880489256a51c6d21407
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/IbikiAlerm/IbikiAlerm.unity
+    guid: cec621e31762a12418895fb5246f8a57
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/IbikiAlerm/IbikiAlerm_DetectSense.unity
+    guid: 478fe9f239861b144a6e5a43f4ace326
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/LowBreathAlerm/LowBreathAlerm.unity
+    guid: 2b2293b8d8c75214c9883c27c7c4e5fd
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/Music/Music.unity
+    guid: 129557859f955bb46aca6f2965ba6f35
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/StopMove/StopMove.unity
+    guid: 8f9465d249bc91e409e880ca4ffac8e2
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/AlermSetting/Vibration/Vibration.unity
+    guid: 07980005158d00b41b6ff87ff851e703
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/DeviceSetting/DeviceSetting.unity
+    guid: 4ed33f68213fc4249bb1bc6840d5b673
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/DeviceSetting/ActionMode/ActionMode.unity
+    guid: 0b7fb38200d410c4695841eb1cbc1f27
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/DeviceSetting/SnoreSensitivity/SnoreSensitivity.unity
+    guid: de740eccc51fbbb41beed99bb3ad55b6
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/DeviceSetting/SuppressionOperationMaxTime/SuppressionOperationMaxTime.unity
+    guid: 775824824a730fe49accdfdf8069e07b
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/DeviceSetting/SuppressionStrength/SuppressionStrength.unity
+    guid: b865bc2d600d1a8458dc233371b8ed95
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/License/License.unity
+    guid: 230c17711ac140c48a665ba850a62e6c
+  - enabled: 1
+    path: Assets/Projects/Scenes/History/History_List.unity
+    guid: f0ab62c6f7cf2b14b9796005d66b2b9f
+  - enabled: 1
+    path: Assets/Projects/Scenes/Splash/BLEConnect.unity
+    guid: 65e2155f2f99014468db980084ac8a97
+  - enabled: 1
+    path: Assets/Projects/Scenes/Setting/Debug.unity
+    guid: b91ffd5f1c122634a8dff01a3fd31b7f
+  - enabled: 1
+    path: Assets/Projects/Scenes/InitialLunch/BTConnectPrepare.unity
+    guid: eb6e2e7978e887d4c8010e816667e0ae
+  - enabled: 1
+    path: Assets/Projects/Scenes/InitialLunch/PrivacyPolicy.unity
+    guid: 3c7b0e5189a3d84448105d442f40fef7
+  - enabled: 1
+    path: Assets/Projects/Scenes/InitialLunch/TermsOfUse.unity
+    guid: 4fcdd43cdb0b45e4fb02cf54530fa5b7
+  - enabled: 1
+    path: Assets/Projects/Scenes/InitialLunch/BTConnect.unity
+    guid: 73886a4d52ac1ae44a423ff317ed77b0

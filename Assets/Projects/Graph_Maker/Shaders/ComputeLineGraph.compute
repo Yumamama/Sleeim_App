@@ -1,0 +1,64 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it with cs.SetTexture
+RWTexture2D<float4> Result;
+float4 color;
+uint isFill;
+uint isHorizontal;
+uint texSize;
+uint numPoints;
+float minVal;
+float maxVal;
+float4 pointVals[1500];
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+	Result[id.xy] = float4(0, 0, 0, 0);
+	
+	uint minValScaled = (uint)round(minVal * texSize);
+	uint idx = (isHorizontal ? id.y : id.x);
+	uint idy = (isHorizontal ? id.x : id.y);
+
+	//改良版-----------
+
+	//自分のピクセルのx座標の割合いから、グラフのどの二点の間にあるかを求める
+	float xPosRatio = (float)idx / (float)texSize;	//描画するピクセルのX座標位置の全体から見た割合
+	//グラフの要素でX座標がもっとも近い二点を求める
+	float pointIndex = (float)numPoints * xPosRatio;	//グラフの要素に変換したときの位置
+	uint nearPointIndex_left = floor(pointIndex);	//グラフのX座標における近傍点の要素インデックス(小さいほう)
+	uint nearPointIndex_right = ceil(pointIndex);	//グラフのX座標における近傍点の要素インデックス(大きいほう)
+	//近傍の二点から、描画したい点がグラフの領域内(グラフの値よりも小さいところ)にあるか調べる
+	float pointYValue = pointVals[nearPointIndex_left].y * (nearPointIndex_right - pointIndex) + pointVals[nearPointIndex_right].y * (pointIndex - nearPointIndex_left);
+	bool isInReagion = ((float)idy / (float)texSize) < pointYValue;
+
+	float alphaScale = 0;
+	if (isInReagion) {
+		//領域内にあれば色を描画する
+		//値の大きさによって透明度を変える
+		alphaScale = (float)idy / (float)texSize;
+	}
+	Result[id.xy] = float4(color.x, color.y, color.z, alphaScale * color.w);
+	//-----------------
+
+	/*
+	for (uint i = 0; i < numPoints; i++) {
+		uint px = (uint)round(pointVals[i].x * texSize);
+		uint py = (uint)round(pointVals[i].y * texSize);
+		if (i > 0) {
+			uint ppx = (uint)round(pointVals[i-1].x * texSize);
+			uint ppy = (uint)round(pointVals[i-1].y * texSize);
+			float slope = (pointVals[i].y - pointVals[i-1].y) / (pointVals[i].x - pointVals[i-1].x);
+			slope = slope <= 1 ? slope : 1;
+			uint valFromSlope = (uint)round(slope * (idx - ppx) + ppy);
+			
+			if (idx >= ppx && idx <= px && idy <= valFromSlope && idy >= minValScaled) {
+				float alphaScale = isFill ? 1 : (((float)idy / (float)texSize) - minVal) / (maxVal - minVal);
+				Result[id.xy] = float4(color.x, color.y, color.z, alphaScale * color.w);
+				break;
+			}
+		}
+	}
+	*/
+}
