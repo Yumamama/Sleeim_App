@@ -9,14 +9,24 @@ using UnityEngine.UI;
 public class ActionModeViewController : ViewControllerBase {
 
     /// <summary>
-    /// 通常モードトグル
+    /// 抑制モード(いびき)トグル
     /// </summary>
-    public Toggle NormalModeToggle;
+    public Toggle SuppressModeIbikiToggle;
+
+    /// <summary>
+    /// 抑制モード(いびき+無呼吸)トグル
+    /// </summary>
+    public Toggle SuppressModeToggle;
 
     /// <summary>
     /// モニタリングモードトグル
     /// </summary>
     public Toggle MonitoringModeToggle;
+
+    /// <summary>
+    /// 抑制モード（無呼吸）トグル
+    /// </summary>
+    public Toggle SuppressModeMukokyuToggle;
 
     /// <summary>
     /// シーンタグ
@@ -41,11 +51,17 @@ public class ActionModeViewController : ViewControllerBase {
     /// </summary>
     private void LoadActionModeSetting() {
         switch (DeviceSettingViewController.TempDeviceSetting.ActionMode) {
-            case ActionMode.NormalMode:
-                NormalModeToggle.isOn = true;
+            case ActionMode.SuppressModeIbiki:
+                SuppressModeIbikiToggle.isOn = true;
+                break;
+            case ActionMode.SuppressMode:
+                SuppressModeToggle.isOn = true;
                 break;
             case ActionMode.MonitoringMode:
                 MonitoringModeToggle.isOn = true;
+                break;
+            case ActionMode.SuppressModeMukokyu:
+                SuppressModeMukokyuToggle.isOn = true;
                 break;
             default:
                 break;
@@ -60,13 +76,28 @@ public class ActionModeViewController : ViewControllerBase {
     }
 
     /// <summary>
-    /// 通常モード値変化イベントハンドラ
+    /// 抑制モード(いびき)値変化イベントハンドラ
     /// </summary>
     /// <param name="isOn"></param>
-    public void OnNormalModeToggleValueChanged(bool isOn) {
-        if (isOn) {
+    public void OnSuppressModeIbikiToggleValueChanged(bool isOn)
+    {
+        if (isOn)
+        {
             DeviceSettingViewController.TempDeviceSetting.ActionMode
-                = ActionMode.NormalMode;
+                = ActionMode.SuppressModeIbiki;
+        }
+    }
+
+    /// <summary>
+    /// 抑制モード(いびき+無呼吸)値変化イベントハンドラ
+    /// </summary>
+    /// <param name="isOn"></param>
+    public void OnSuppressModeToggleValueChanged(bool isOn)
+    {
+        if (isOn)
+        {
+            DeviceSettingViewController.TempDeviceSetting.ActionMode
+                = ActionMode.SuppressMode;
         }
     }
 
@@ -78,6 +109,19 @@ public class ActionModeViewController : ViewControllerBase {
         if (isOn) {
             DeviceSettingViewController.TempDeviceSetting.ActionMode
                 = ActionMode.MonitoringMode;
+        }
+    }
+
+    /// <summary>
+    /// 抑制モード（無呼吸）値変化イベントハンドラ
+    /// </summary>
+    /// <param name="isOn"></param>
+    public void OnSuppressModeMukokyuToggleValueChanged(bool isOn)
+    {
+        if (isOn)
+        {
+            DeviceSettingViewController.TempDeviceSetting.ActionMode
+                = ActionMode.SuppressModeMukokyu;
         }
     }
 }

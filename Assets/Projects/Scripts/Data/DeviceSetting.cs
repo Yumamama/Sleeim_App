@@ -15,7 +15,7 @@ public class DeviceSetting {
     /// <summary>
     /// 動作モード
     /// </summary>
-    public ActionMode ActionMode { get; set; } = ActionMode.NormalMode;
+    public ActionMode ActionMode { get; set; } = ActionMode.SuppressModeIbiki;
 
     /// <summary>
     /// いびき感度
@@ -55,8 +55,10 @@ public class DeviceSetting {
 /// 動作モード定数
 /// </summary>
 public enum ActionMode : byte {
-    NormalMode = 0,
-    MonitoringMode
+    SuppressModeIbiki = 0,
+    SuppressMode,
+    MonitoringMode,
+    SuppressModeMukokyu,
 }
 
 /// <summary>

@@ -767,7 +767,7 @@ public static class UserDataManager {
                 /// </summary>
                 /// <returns>動作モード</returns>
                 public static ActionMode Load() {
-                    const int defaultValue = (int)ActionMode.NormalMode;
+                    const int defaultValue = (int)ActionMode.SuppressModeIbiki;
                     return (ActionMode)PlayerPrefs.GetInt(Key, defaultValue);
                 }
             }

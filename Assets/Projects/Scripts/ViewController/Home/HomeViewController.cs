@@ -332,11 +332,17 @@ public class HomeViewController : ViewControllerBase
         DeviceSetting deviceSetting = UserDataManager.Setting.DeviceSettingData.Load();
         switch (deviceSetting.ActionMode)
         {
-            case ActionMode.NormalMode:
-                ActionModeValue.text = "通常";
+            case ActionMode.SuppressModeIbiki:
+                ActionModeValue.text = "抑制モード(いびき)";
+                break;
+            case ActionMode.SuppressMode:
+                ActionModeValue.text = "抑制モード(いびき+無呼吸)";
                 break;
             case ActionMode.MonitoringMode:
                 ActionModeValue.text = "モニタリング";
+                break;
+            case ActionMode.SuppressModeMukokyu:
+                ActionModeValue.text = "抑制モード（無呼吸）";
                 break;
             default:
                 // 何もしない
