@@ -37,7 +37,7 @@ public class DeviceSettingViewController : ViewControllerBase {
             TempDeviceSetting = UserDataManager.Setting.DeviceSettingData.Load();
         }
 
-        if (TempDeviceSetting != null)
+        if (TempDeviceSetting != null && suppressionStartTimeText != null)
         {
             suppressionStartTimeText.text = (int)TempDeviceSetting.SuppressionStartTime + "分";
         }
@@ -143,7 +143,7 @@ public class DeviceSettingViewController : ViewControllerBase {
     /// <summary>
     /// 一時保存したデバイス設定をアプリに保存する
     /// </summary>
-    private void SaveDeviceSetting() {
+    protected void SaveDeviceSetting() {
         UserDataManager.Setting.DeviceSettingData.Save(TempDeviceSetting);
     }
 
