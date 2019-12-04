@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Kaimin.Managers;
 using System;
 using MiniJSON;
@@ -9,6 +10,8 @@ using MiniJSON;
 /// デバイス設定画面管理クラス
 /// </summary>
 public class DeviceSettingViewController : ViewControllerBase {
+
+    [SerializeField] Text suppressionStartTimeText = null;
 
     /// <summary>
     /// 一時保存されたデバイス設定
@@ -32,6 +35,11 @@ public class DeviceSettingViewController : ViewControllerBase {
         base.Start();
         if (TempDeviceSetting == null) {
             TempDeviceSetting = UserDataManager.Setting.DeviceSettingData.Load();
+        }
+
+        if (TempDeviceSetting != null)
+        {
+            suppressionStartTimeText.text = (int)TempDeviceSetting.SuppressionStartTime + "分";
         }
     }
 
@@ -79,18 +87,56 @@ public class DeviceSettingViewController : ViewControllerBase {
     }
 
     /// <summary>
+    /// 抑制開始時間ボタン押下イベントハンドラ
+    /// </summary>
+    public void OnSuppressionStartTimeButtonTap()
+    {
+        //ピッカーを表示して抑制開始時間を設定させる
+        string title = "抑制開始時間設定";
+        string unit = "分";
+        float maxValue = (float)SuppressionStartTime.Max;
+        float minValue = (float)SuppressionStartTime.Min;
+        float stepValue = 1;
+        float currentValue = (float)TempDeviceSetting.SuppressionStartTime;
+        var vs = new SelectValueDialogParamSet(
+            SelectValueDialogParamSet.DISPLAY_TYPE.Numeric,
+            title,
+            unit,
+            maxValue,
+            minValue,
+            stepValue,
+            currentValue);
+        SelectValueDialog.Show(vs, (SelectValueDialog.ButtonItem status, float value, GameObject dialog) => {
+            if (status == SelectValueDialog.ButtonItem.OK)
+            {
+                //結果をテキストに反映
+                suppressionStartTimeText.text = value.ToString("0") + unit;
+                
+                //アプリ内保存
+                TempDeviceSetting.SuppressionStartTime = (SuppressionStartTime)value;
+                SaveDeviceSetting();
+            }
+            else
+            {
+                //なにもしない
+            }
+        });
+    }
+
+    /// <summary>
     /// デバイス設定を変更するコルーチン
     /// </summary>
     /// <returns></returns>
     private IEnumerator ChangeDeviceSettingCoroutine() {
         Debug.Log("DeviceSetting: start ChangeDeviceSettingCoroutine");
         bool isSuccess = false;
-        yield return StartCoroutine(SendDeviceSettingCoroutine(
+        yield return StartCoroutine(SendCommandToDeviceCoroutine(
+            DeviceSetting.CommandCode,
             (bool b) => isSuccess = b));
         if (isSuccess) {
             SaveDeviceSetting();
         } else {
-            yield return StartCoroutine(ShowDeviceChangeFailedDialogCoroutine());
+            yield return StartCoroutine(ShowMessageDialogCoroutine("設定変更に失敗しました。"));
         }
     }
 
@@ -109,12 +155,26 @@ public class DeviceSettingViewController : ViewControllerBase {
     }
 
     /// <summary>
-    /// デバイス設定変更コマンド通信を行うコルーチン
+    /// コマンド通信を行うコルーチン (デバイス設定変更、バイブレーション確認、バイブレーション停止など)
     /// </summary>
+    /// <param name="commandCode">CommandCode(デバイス設定変更)、CommandCodeVibrationConfirm(バイブレーション確認)、CommandCodeVibrationStop(バイブレーション停止)</param>
     /// <param name="callback">デバイス設定変更が成功したかを返す</param>
     /// <returns></returns>
-    private IEnumerator SendDeviceSettingCoroutine(Action<bool> callback) {
-        Debug.Log("DeviceSetting: start SendDeviceSettingCoroutine");
+    protected IEnumerator SendCommandToDeviceCoroutine(byte commandCode, Action<bool> callback) {
+        String coroutineName = "ChangeDeviceSetting"; //Default
+        String coroutineMessage = "同期中"; //Default
+        if (commandCode == DeviceSetting.CommandCodeVibrationConfirm)
+        {
+            coroutineName = "VibrationConfirm";
+            coroutineMessage = "バイブレーション確認中";
+        }
+        else if (commandCode == DeviceSetting.CommandCodeVibrationStop)
+        {
+            coroutineName = "VibrationStop";
+            coroutineMessage = "バイブレーション停止中";
+        }
+
+        Debug.Log("DeviceSetting: start Send" + coroutineName + "Coroutine, CommandCode: " + commandCode);
         if (!BluetoothManager.Instance.IsBluetoothEnabled()) {
             bool isBluetoothEnabled = false;
             yield return StartCoroutine(
@@ -127,7 +187,7 @@ public class DeviceSettingViewController : ViewControllerBase {
         if (UserDataManager.State.isDoneDevicePareing()) {
             Debug.Log("DeviceSetting: paring OK");
             if (!UserDataManager.State.isConnectingDevice()) {
-                Debug.Log("DeviceSetting: start connectiong");
+                Debug.Log("DeviceSetting: start connection");
                 string deviceName = UserDataManager.Device.GetPareringDeviceName();
                 string deviceAdress = UserDataManager.Device.GetPareringBLEAdress();
                 bool isConnected = false;
@@ -151,23 +211,24 @@ public class DeviceSettingViewController : ViewControllerBase {
         }
         Debug.Log("DeviceSetting: connected");
 
-        UpdateDialog.Show("同期中");
+        UpdateDialog.Show(coroutineMessage);
         bool? isCommunicationSuccess = null;
-        BluetoothManager.Instance.SendDeviceSettingChangeCommand(
+        BluetoothManager.Instance.SendCommandToDevice(
+            commandCode,
             TempDeviceSetting,
             (string data) => {
                 //エラー時
-                Debug.Log ("ChangeDeviceSetting error:" + data);
+                Debug.Log (coroutineName + " error:" + data);
                 isCommunicationSuccess = false;
             },
             (bool success) => {
                 //コマンド書き込み結果
-                Debug.Log ("ChangeDeviceSetting write:" + success);
+                Debug.Log (coroutineName + " write:" + success);
                 if (!success) isCommunicationSuccess = false;
             },
             (string data) => {
                 //応答結果
-                Debug.Log ("ChangeDeviceSetting response:" + data);
+                Debug.Log (coroutineName + " response:" + data);
                 var json = Json.Deserialize(data) as Dictionary<string, object>;
                 bool response = Convert.ToBoolean(json["KEY2"]);
                 isCommunicationSuccess = response;
@@ -286,10 +347,10 @@ public class DeviceSettingViewController : ViewControllerBase {
     /// デバイス設定変更失敗ダイアログを表示する
     /// </summary>
     /// <returns></returns>
-    private IEnumerator ShowDeviceChangeFailedDialogCoroutine() {
+    protected IEnumerator ShowMessageDialogCoroutine(String message) {
         bool isOk = false;
         MessageDialog.Show (
-            "設定変更に失敗しました。",
+            message,
             useOK: true,
             useCancel: false,
             onOK: () => isOk = true);

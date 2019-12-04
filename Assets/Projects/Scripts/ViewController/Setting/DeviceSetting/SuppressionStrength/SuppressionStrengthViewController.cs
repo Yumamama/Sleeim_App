@@ -6,7 +6,8 @@ using UnityEngine.UI;
 /// <summary>
 /// 抑制強度画面管理クラス
 /// </summary>
-public class SuppressionStrengthViewController : ViewControllerBase {
+public class SuppressionStrengthViewController : DeviceSettingViewController
+{
 
     /// <summary>
     /// 弱トグル
@@ -22,6 +23,11 @@ public class SuppressionStrengthViewController : ViewControllerBase {
     /// 強トグル
     /// </summary>
     public Toggle HighToggle;
+
+    /// <summary>
+    /// 徐々に強トグル
+    /// </summary>
+    public Toggle HighGradToggle;
 
     /// <summary>
     /// シーンタグ
@@ -55,6 +61,9 @@ public class SuppressionStrengthViewController : ViewControllerBase {
             case SuppressionStrength.High:
                 HighToggle.isOn = true;
                 break;
+            case SuppressionStrength.HighGrad:
+                HighGradToggle.isOn = true;
+                break;
             default:
                 break;
         }
@@ -73,8 +82,7 @@ public class SuppressionStrengthViewController : ViewControllerBase {
     /// <param name="isOn"></param>
     public void OnLowToggleValueChanged(bool isOn) {
         if (isOn) {
-            DeviceSettingViewController.TempDeviceSetting.SuppressionStrength
-                = SuppressionStrength.Low;
+            StartVibrationConfirmCoroutine(SuppressionStrength.Low);
         }
     }
 
@@ -84,8 +92,7 @@ public class SuppressionStrengthViewController : ViewControllerBase {
     /// <param name="isOn"></param>
     public void OnMidToggleValueChanged(bool isOn) {
         if (isOn) {
-            DeviceSettingViewController.TempDeviceSetting.SuppressionStrength
-                = SuppressionStrength.Mid;
+            StartVibrationConfirmCoroutine(SuppressionStrength.Mid);
         }
     }
 
@@ -95,8 +102,47 @@ public class SuppressionStrengthViewController : ViewControllerBase {
     /// <param name="isOn"></param>
     public void OnHighToggleValueChanged(bool isOn) {
         if (isOn) {
-            DeviceSettingViewController.TempDeviceSetting.SuppressionStrength
-                = SuppressionStrength.High;
+            StartVibrationConfirmCoroutine(SuppressionStrength.High);
+        }
+    }
+
+
+    /// <summary>
+    /// 徐々に強トグル値変化イベントハンドラ
+    /// </summary>
+    /// <param name="isOn"></param>
+    public void OnHighGradToggleValueChanged(bool isOn)
+    {
+        if (isOn)
+        {
+            StartVibrationConfirmCoroutine(SuppressionStrength.HighGrad);
+        }
+    }
+
+    public void StartVibrationConfirmCoroutine(SuppressionStrength suppressionStrength)
+    {
+        DeviceSettingViewController.TempDeviceSetting.SuppressionStrength = suppressionStrength;
+        if (DeviceSettingViewController.TempDeviceSetting.SuppressionStrength != suppressionStrength)
+        {
+            
+            //StartCoroutine(ConfirmVibrationCoroutine(suppressionStrength));
+        }
+    }
+
+    /// <summary>
+    /// バイブレーション確認するコルーチン
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator ConfirmVibrationCoroutine(SuppressionStrength suppressionStrength) {
+        Debug.Log("ConfirmVibration: start ConfirmVibrationCoroutine");
+        bool isSuccess = false;
+        yield return StartCoroutine(SendCommandToDeviceCoroutine(
+            DeviceSetting.CommandCodeVibrationConfirm,
+            (bool b) => isSuccess = b));
+        if (isSuccess) {
+            //DeviceSettingViewController.TempDeviceSetting.SuppressionStrength = suppressionStrength;
+        } else {
+            yield return StartCoroutine(ShowMessageDialogCoroutine("バイブレーション確認に失敗しました。"));
         }
     }
 }

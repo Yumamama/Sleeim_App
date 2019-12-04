@@ -53,6 +53,11 @@ public class HomeViewController : ViewControllerBase
     [SerializeField] Text SuppressionOperationMaxTimeValue = null;
 
     /// <summary>
+    /// 抑制開始時間の値
+    /// </summary>
+    //[SerializeField] Text SuppressionStartTimeValue = null;
+
+    /// <summary>
     /// 期間テキスト
     /// </summary>
     [SerializeField] Text Period = null;
@@ -376,6 +381,9 @@ public class HomeViewController : ViewControllerBase
             case SuppressionStrength.High:
                 SuppressionStrengthValue.text = "強";
                 break;
+            case SuppressionStrength.HighGrad:
+                SuppressionStrengthValue.text = "徐々に強";
+                break;
             default:
                 // 何もしない
                 break;
@@ -395,6 +403,11 @@ public class HomeViewController : ViewControllerBase
             default:
                 // 何もしない
                 break;
+        }
+
+        if (deviceSetting.SuppressionStartTime >= 0)
+        {
+            //SuppressionStartTimeValue.text = deviceSetting.SuppressionStartTime + "分";
         }
     }
 

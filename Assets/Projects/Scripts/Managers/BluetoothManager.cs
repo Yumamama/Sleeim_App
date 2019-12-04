@@ -820,13 +820,15 @@ namespace Kaimin.Managers
         }
 
         /// <summary>
-        /// デバイス設定変更コマンドを送信する
+        /// コマンドを送信する (デバイス設定変更、バイブレーション確認、バイブレーション停止など)
         /// </summary>
+        /// <param name="commandCode">CommandCode(デバイス設定変更)、CommandCodeVibrationConfirm(バイブレーション確認)、CommandCodeVibrationStop(バイブレーション停止)</param>
         /// <param name="deviceSetting">デバイス設定</param>
         /// <param name="onCallBackError"></param>
         /// <param name="onCallBackCommandWrite"></param>
         /// <param name="onCallBackCommandResponse"></param>
-        public void SendDeviceSettingChangeCommand(
+        public void SendCommandToDevice(
+            byte commandCode,
             DeviceSetting deviceSetting,
             Action<string> onCallBackError,
             Action<Boolean> onCallBackCommandWrite,
@@ -835,7 +837,22 @@ namespace Kaimin.Managers
             _onCallBackError = onCallBackError;
             _onCallBackCommandWrite = onCallBackCommandWrite;
             _onCallBackCommandResponse = onCallBackCommandResponse;
-            SendBleCommand(DeviceSetting.CommandCode, deviceSetting.Command);
+
+            if (commandCode == DeviceSetting.CommandCode)
+            {
+                //デバイス設定変更コマンドを送信する
+                SendBleCommand(DeviceSetting.CommandCode, deviceSetting.Command);
+            } 
+            else if (commandCode == DeviceSetting.CommandCodeVibrationConfirm)
+            {
+                //バイブレーション確認コマンドを送信する
+                SendBleCommand(DeviceSetting.CommandCodeVibrationConfirm, deviceSetting.CommandVibrationConfirm);
+            }
+            else if (commandCode == DeviceSetting.CommandCodeVibrationStop)
+            {
+                //バイブレーション停止コマンドを送信する
+                SendBleCommand(DeviceSetting.CommandCodeVibrationStop, deviceSetting.CommandVibrationStop);
+            }
         }
 
         /// <summary>

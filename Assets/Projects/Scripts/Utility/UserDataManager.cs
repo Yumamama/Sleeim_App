@@ -725,6 +725,7 @@ public static class UserDataManager {
                 SnoreSensitivityData.Save(deviceSettig.SnoreSensitivity);
                 SuppressionStrengthData.Save(deviceSettig.SuppressionStrength);
                 SuppressionOperationMaxTimeData.Save(deviceSettig.SuppressionOperationMaxTime);
+                SuppressionStartTimeData.Save(deviceSettig.SuppressionStartTime);
             }
 
             /// <summary>
@@ -736,11 +737,13 @@ public static class UserDataManager {
                 var snoreSensitivity = SnoreSensitivityData.Load();
                 var suppressionStrength = SuppressionStrengthData.Load();
                 var suppressionOperationMaxTime = SuppressionOperationMaxTimeData.Load();
+                var suppressionStartTime = SuppressionStartTimeData.Load();
                 return new DeviceSetting() {
                     ActionMode = actionMode,
                     SnoreSensitivity = snoreSensitivity,
                     SuppressionStrength = suppressionStrength,
-                    SuppressionOperationMaxTime = suppressionOperationMaxTime
+                    SuppressionOperationMaxTime = suppressionOperationMaxTime,
+                    SuppressionStartTime = suppressionStartTime
                 };
             }
 
@@ -857,6 +860,36 @@ public static class UserDataManager {
                     return (SuppressionOperationMaxTime)PlayerPrefs.GetInt(
                         Key,
                         defaultValue);
+                }
+            }
+
+            /// <summary>
+            /// 抑制開始時間を保存・読込するクラス
+            /// </summary>
+            public static class SuppressionStartTimeData
+            {
+
+                /// <summary>
+                /// データの保存先を示すキー
+                /// </summary>
+                private readonly static string Key = "SuppressionStartTime";
+
+                /// <summary>
+                /// 抑制開始時間設定を保存する
+                /// </summary>
+                /// <param name="suppressionStartTime">抑制開始時間</param>
+                public static void Save(SuppressionStartTime suppressionStartTime)
+                {
+                    PlayerPrefs.SetInt(Key, (int)suppressionStartTime);
+                }
+
+                /// <summary>
+                /// 抑制開始時間を読み込む
+                /// </summary>
+                /// <returns>抑制開始時間</returns>
+                public static SuppressionStartTime Load()
+                {
+                    return (SuppressionStartTime)PlayerPrefs.GetInt(Key, (int)SuppressionStartTime.Default);
                 }
             }
         }
