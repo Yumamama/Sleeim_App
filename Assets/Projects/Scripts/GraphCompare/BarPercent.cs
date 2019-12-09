@@ -25,7 +25,7 @@ public class BarPercent : MonoBehaviour {
         double p2 = System.Math.Round((double)(percent2 * 100), 1);
         double p3 = System.Math.Round((double)(percent3 * 100), 1);
         double p4 = 100 - p1 - p2 - p3;
-        if (p4 < 0.1) { p4 = 0; }
+        p4 = p4 < 0.1 ? 0 : System.Math.Round(p4, 1);
 
         pkaiMin.text  = p1 + "%";
         pIbiki.text   = p2 + "%";
@@ -42,6 +42,10 @@ public class BarPercent : MonoBehaviour {
             else if (vibrationStrength == (int)VibrationStrength.Strong)
             {
                 icName = "ic_mode_suppress_strong";
+            }
+            else if (vibrationStrength == (int)VibrationStrength.Multi)
+            {
+                icName = "ic_mode_suppress_multi";
             }
             btnIcon.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/" + icName);
         }

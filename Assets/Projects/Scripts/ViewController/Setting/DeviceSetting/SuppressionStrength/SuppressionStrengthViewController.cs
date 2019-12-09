@@ -134,14 +134,15 @@ public class SuppressionStrengthViewController : DeviceSettingViewController
     /// <returns></returns>
     private IEnumerator ConfirmVibrationCoroutine(SuppressionStrength suppressionStrength) {
         Debug.Log("ConfirmVibration: start ConfirmVibrationCoroutine");
-        bool isSuccess = false;
         yield return StartCoroutine(SendCommandToDeviceCoroutine(
             DeviceSetting.CommandCodeVibrationConfirm,
-            (bool b) => isSuccess = b));
-        if (isSuccess) {
-            SaveDeviceSetting();
-        } else {
-            yield return StartCoroutine(ShowMessageDialogCoroutine("バイブレーション確認に失敗しました。"));
-        }
+            (bool isSuccess) => {
+                if (isSuccess) {
+                    SaveDeviceSetting();
+                } else {
+                    StartCoroutine(ShowMessageDialogCoroutine("バイブレーション確認に失敗しました。"));
+                }
+            }, 5f)
+        );
     }
 }

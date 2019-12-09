@@ -92,12 +92,24 @@ public class CSVManager
         string[] sleepRecordStartTimeLine = reader.ReadLine().Split(','); //CsvFileの3行目 (Row 2)
 
         string sleepTime = "";
-        if (profileInfo.Length >= 7)
+        if (chartInfo.endSleepTime != null && sleepRecordStartTimeLine.Length >= 3)
         {
-            string sleepStartTime = profileInfo[5];
-            string sleepEndTime = profileInfo[6];
+            string date = sleepRecordStartTimeLine[0];
+            string time = sleepRecordStartTimeLine[2];
+            string[] dateArr = date.Split('/');
+            string[] timeArr = time.Split(':');
+            int year = int.Parse(dateArr[0]);
+            int month = int.Parse(dateArr[1]);
+            int day = int.Parse(dateArr[2]);
+            int hour = int.Parse(timeArr[0]);
+            int min = int.Parse(timeArr[1]);
+            int sec = int.Parse(timeArr[2]);
+            chartInfo.startSleepTime = new System.DateTime(year, month, day, hour, min, sec);
 
-            sleepTime = getDurationTime(sleepStartTime, sleepEndTime);
+            int sleepTimeSec = Graph.Time.GetDateDifferencePerSecond(chartInfo.startSleepTime, chartInfo.endSleepTime);
+            System.TimeSpan ts = new System.TimeSpan(hours: 0, minutes: 0, seconds: sleepTimeSec);
+            int hourWithDay = 24 * ts.Days + ts.Hours;      // 24時間超えた場合の時間を考慮
+            sleepTime = string.Format("{0:00}:{1:00}", hourWithDay, ts.Minutes);
         }
 
         System.DateTime fileDateTime = Kaimin.Common.Utility.TransFilePathToDate(filePath);
@@ -137,39 +149,42 @@ public class CSVManager
         float numFumei = 0;
 
         //無呼吸状態が５分(300s)以上続いている箇所は不明状態にする
-        float numFumeiAble = 0;
-        float mukokyuContinuousTime = 0;
-        float mukokyuStartTime = 0;
-
+        float[] numFumeiAble = { 0, 0, 0 }; //Of item.BreathState1,2,3
+        long[] mukokyuContinuousTime = { 0, 0, 0 };
+        long[] mukokyuStartTime = { 0, 0, 0 };
+        
         foreach (var item in sleepData)
         {
             int[] states = { item.BreathState1, item.BreathState2, item.BreathState3 };
-            foreach (var state in states)
-            {
+            System.DateTime tmpDateTime = item.GetDateTime();
+            long tmpTime = ((System.DateTimeOffset)tmpDateTime).ToUnixTimeSeconds();
+
+            for (int i = 0; i < states.Length; i++) {
+                var state = states[i];
+            
                 if (state == (int)SleepData.BreathState.Apnea)
                 {
                     numMukokyu++;
-                    numFumeiAble++;
-
-                    System.DateTime tmpDateTime = item.GetDateTime();
-                    if (mukokyuStartTime == 0)
+                    numFumeiAble[i]++;
+                    
+                    if (mukokyuStartTime[i] == 0)
                     {
-                        mukokyuStartTime = ((System.DateTimeOffset)tmpDateTime).ToUnixTimeSeconds();
+                        mukokyuStartTime[i] = tmpTime;
                     } else
                     {
-                        mukokyuContinuousTime = ((System.DateTimeOffset)tmpDateTime).ToUnixTimeSeconds() - mukokyuStartTime;
+                        mukokyuContinuousTime[i] = tmpTime - mukokyuStartTime[i];
                     }
                 } else
                 {
-                    if (mukokyuContinuousTime > MAX_MUKOKYU_CONTINUOUS_TIME) //無呼吸状態が５分(300s)以上続いている場合
+                    if (mukokyuContinuousTime[i] > MAX_MUKOKYU_CONTINUOUS_TIME) //無呼吸状態が５分(300s)以上続いている場合
                     {
-                        numMukokyu -= numFumeiAble;
-                        numFumei += numFumeiAble;
+                        numMukokyu -= numFumeiAble[i];
+                        numFumei += numFumeiAble[i];
                     }
                     //Reset
-                    numFumeiAble = 0;
-                    mukokyuContinuousTime = 0;
-                    mukokyuStartTime = 0;
+                    numFumeiAble[i] = 0;
+                    mukokyuContinuousTime[i] = 0;
+                    mukokyuStartTime[i] = 0;
 
                     if (state == (int)SleepData.BreathState.Normal)
                     {
@@ -184,6 +199,16 @@ public class CSVManager
                         numFumei++;
                     }
                 }
+            }
+        }
+
+        //Check when end of file
+        for (int i = 0; i < 3; i++)
+        {
+            if (mukokyuContinuousTime[i] > MAX_MUKOKYU_CONTINUOUS_TIME) //無呼吸状態が５分(300s)以上続いている場合
+            {
+                numMukokyu -= numFumeiAble[i];
+                numFumei += numFumeiAble[i];
             }
         }
 

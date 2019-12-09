@@ -159,8 +159,9 @@ public class DeviceSettingViewController : ViewControllerBase {
     /// </summary>
     /// <param name="commandCode">CommandCode(デバイス設定変更)、CommandCodeVibrationConfirm(バイブレーション確認)、CommandCodeVibrationStop(バイブレーション停止)</param>
     /// <param name="callback">デバイス設定変更が成功したかを返す</param>
+    /// <param name="timeout">タイムアウト時間設定 (0: タイムアウトなし)</param>
     /// <returns></returns>
-    protected IEnumerator SendCommandToDeviceCoroutine(byte commandCode, Action<bool> callback) {
+    protected IEnumerator SendCommandToDeviceCoroutine(byte commandCode, Action<bool> callback, float timeout = 0) {
         String coroutineName = "ChangeDeviceSetting"; //Default
         String coroutineMessage = "同期中"; //Default
         if (commandCode == DeviceSetting.CommandCodeVibrationConfirm)
@@ -224,7 +225,11 @@ public class DeviceSettingViewController : ViewControllerBase {
             (bool success) => {
                 //コマンド書き込み結果
                 Debug.Log (coroutineName + " write:" + success);
-                if (!success) isCommunicationSuccess = false;
+                if (success) {
+                    if (commandCode == DeviceSetting.CommandCodeVibrationConfirm) isCommunicationSuccess = true;
+                } else {
+                    isCommunicationSuccess = false;
+                }
             },
             (string data) => {
                 //応答結果
@@ -233,7 +238,13 @@ public class DeviceSettingViewController : ViewControllerBase {
                 bool response = Convert.ToBoolean(json["KEY2"]);
                 isCommunicationSuccess = response;
             });
-        yield return new WaitUntil(() => isCommunicationSuccess != null);
+
+        float timeCounter = 0;
+        yield return new WaitUntil(() =>
+        {
+            timeCounter += Time.deltaTime;
+            return isCommunicationSuccess != null || (timeout > 0 && timeCounter > timeout);
+        });
         UpdateDialog.Dismiss();
         callback((bool)isCommunicationSuccess);
     }

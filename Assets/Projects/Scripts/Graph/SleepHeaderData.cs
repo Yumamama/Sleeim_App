@@ -49,7 +49,7 @@ public class SleepHeaderData {
     public int SleepMode;
 
     /// <summary>
-    /// バイブレーションの強さ	0～3 整数(0：弱、1：中、2：強)
+    /// バイブレーションの強さ	0～3 整数(0：弱、1：中、2：強、3：徐々に強く)
     /// </summary>
     public int VibrationStrength;
 

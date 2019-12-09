@@ -2,6 +2,8 @@
 {
     public string fileName;
     public string date;
+    public System.DateTime startSleepTime;
+    public System.DateTime endSleepTime;
     public string sleepTime;
 
     public int sleepMode;
@@ -19,9 +21,11 @@ public enum SleepMode
     Monitor = 2,
 }
 
+//SuppressionStrengthと同じ
 public enum VibrationStrength
 {
     Weak = 0,   //弱
     Medium = 1, //中
     Strong = 2, //強
+    Multi = 3,  //徐々に強く
 }

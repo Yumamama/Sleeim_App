@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class GraphCompareViewController : ViewControllerBase
 {
@@ -241,6 +242,7 @@ public class GraphCompareViewController : ViewControllerBase
                 ChartInfo chartInfo = CSVManager.convertSleepDataToChartInfo(sleepData);
                 if (chartInfo != null)
                 {
+                    chartInfo.endSleepTime = sleepData.Select(data => data.GetDateTime()).Last();
                     CSVManager.convertSleepHeaderToChartInfo(chartInfo, filePath);
 
                     this.chartsOfWeek.Add(chartInfo);
