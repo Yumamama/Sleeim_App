@@ -34,19 +34,24 @@ public class BarPercent : MonoBehaviour {
 
         if(vibrationStrength >= 0)
         {
-            string icName = (sleepMode == (int)SleepMode.Monitor) ? "ic_mode_monitor" : "ic_mode_suppress";
-            if (vibrationStrength == (int)VibrationStrength.Weak)
+            string icName = "ic_mode_monitor"; //Default
+            if (sleepMode != (int)SleepMode.Monitor)
             {
-                icName = "ic_mode_suppress_weak";
+                icName = "ic_mode_suppress";
+                if (vibrationStrength == (int)VibrationStrength.Weak)
+                {
+                    icName = "ic_mode_suppress_weak";
+                }
+                else if (vibrationStrength == (int)VibrationStrength.Strong)
+                {
+                    icName = "ic_mode_suppress_strong";
+                }
+                else if (vibrationStrength == (int)VibrationStrength.Multi)
+                {
+                    icName = "ic_mode_suppress_multi";
+                }
             }
-            else if (vibrationStrength == (int)VibrationStrength.Strong)
-            {
-                icName = "ic_mode_suppress_strong";
-            }
-            else if (vibrationStrength == (int)VibrationStrength.Multi)
-            {
-                icName = "ic_mode_suppress_multi";
-            }
+            
             btnIcon.GetComponent<Image>().sprite = Resources.Load<Sprite>("Images/" + icName);
         }
     }
