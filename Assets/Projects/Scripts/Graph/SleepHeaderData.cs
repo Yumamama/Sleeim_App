@@ -82,6 +82,14 @@ public class SleepHeaderData {
         this.SnoreTime = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
         this.ApneaTime = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
         this.LongestApneaTime = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
+
+        if (sleepRecordStartTimeLine.Length > 9) { //New format 
+            this.SleepMode = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
+            this.VibrationStrength = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
+            this.SnoreSensitivity = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
+            this.ApneaSensitivity = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
+        }
+
         this.DataLength = int.Parse(sleepRecordStartTimeLine[indexCnt++]);
 
         string[] dateArr = date.Split('/');
