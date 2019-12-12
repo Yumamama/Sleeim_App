@@ -11,6 +11,10 @@ using MiniJSON;
 /// </summary>
 public class DeviceSettingViewController : ViewControllerBase {
 
+    [SerializeField] Text actionModeText = null;
+    [SerializeField] Text snoreSensitivityText = null;
+    [SerializeField] Text suppressionStrengthText = null;
+    [SerializeField] Text suppressionOperationMaxTimeText = null;
     [SerializeField] Text suppressionStartTimeText = null;
 
     /// <summary>
@@ -37,10 +41,7 @@ public class DeviceSettingViewController : ViewControllerBase {
             TempDeviceSetting = UserDataManager.Setting.DeviceSettingData.Load();
         }
 
-        if (TempDeviceSetting != null && suppressionStartTimeText != null)
-        {
-            suppressionStartTimeText.text = (int)TempDeviceSetting.SuppressionStartTime + "分";
-        }
+        showCurrentSettingInfo();
     }
 
     /// <summary>
@@ -135,6 +136,7 @@ public class DeviceSettingViewController : ViewControllerBase {
             (bool b) => isSuccess = b));
         if (isSuccess) {
             SaveDeviceSetting();
+            yield return StartCoroutine(ShowMessageDialogCoroutine("設定を変更しました。"));
         } else {
             yield return StartCoroutine(ShowMessageDialogCoroutine("設定変更に失敗しました。"));
         }
@@ -366,5 +368,76 @@ public class DeviceSettingViewController : ViewControllerBase {
             useCancel: false,
             onOK: () => isOk = true);
         yield return new WaitUntil (() => isOk);
+    }
+
+    public void showCurrentSettingInfo()
+    {
+        if (TempDeviceSetting != null) {
+            if (actionModeText != null) {
+                switch (TempDeviceSetting.ActionMode) {
+                    case ActionMode.SuppressModeIbiki:
+                        actionModeText.text = "抑制(いびき)";
+                        break;
+                    case ActionMode.SuppressMode:
+                        actionModeText.text = "抑制(いびき+無呼吸)";
+                        break;
+                    case ActionMode.MonitoringMode:
+                        actionModeText.text = "モニタリング";
+                        break;
+                    case ActionMode.SuppressModeMukokyu:
+                        actionModeText.text = "抑制(無呼吸)";
+                        break;
+                }
+            }
+
+            if (snoreSensitivityText != null) {
+                switch (TempDeviceSetting.SnoreSensitivity) {
+                    case SnoreSensitivity.Low:
+                        snoreSensitivityText.text = "弱";
+                        break;
+                    case SnoreSensitivity.Mid:
+                        snoreSensitivityText.text = "中";
+                        break;
+                    case SnoreSensitivity.High:
+                        snoreSensitivityText.text = "強";
+                        break;
+                }
+            }
+
+            if (suppressionStrengthText != null) {
+                switch (TempDeviceSetting.SuppressionStrength) {
+                    case SuppressionStrength.Low:
+                        suppressionStrengthText.text = "弱";
+                        break;
+                    case SuppressionStrength.Mid:
+                        suppressionStrengthText.text = "中";
+                        break;
+                    case SuppressionStrength.High:
+                        suppressionStrengthText.text = "強";
+                        break;
+                    case SuppressionStrength.HighGrad:
+                        suppressionStrengthText.text = "徐々に強く";
+                        break;
+                }
+            }
+
+            if (suppressionOperationMaxTimeText != null) {
+                switch (TempDeviceSetting.SuppressionOperationMaxTime) {
+                    case SuppressionOperationMaxTime.FiveMin:
+                        suppressionOperationMaxTimeText.text = "5分";
+                        break;
+                    case SuppressionOperationMaxTime.TenMin:
+                        suppressionOperationMaxTimeText.text = "10分";
+                        break;
+                    case SuppressionOperationMaxTime.NoSettings:
+                        suppressionOperationMaxTimeText.text = "設定なし";
+                        break;
+                }
+            }
+
+            if (suppressionStartTimeText != null) {
+                suppressionStartTimeText.text = (int)TempDeviceSetting.SuppressionStartTime + "分";
+            }
+        }
     }
 }
