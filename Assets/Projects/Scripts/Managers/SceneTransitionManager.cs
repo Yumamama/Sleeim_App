@@ -153,7 +153,7 @@ public class SceneTransitionManager : MonoBehaviour {
 		case LoadScene.BTConnectPrepare:
 			return LoadScene.Setting;
 		case LoadScene.BTConnect:
-			return LoadScene.BTConnectPrepare;	
+			return LoadScene.Setting;
         case LoadScene.GraphCompare:
 			return LoadScene.InitialLunch;
 		case LoadScene.PrivacyPolicy:

@@ -79,7 +79,7 @@ public class BTConnectViewController : ViewControllerBase
     //戻るボタンが押されたときに実行される
     public void OnBackButtonTap()
     {
-        SceneTransitionManager.LoadLevel(SceneTransitionManager.LoadScene.BTConnectPrepare);
+        SceneTransitionManager.LoadLevel(SceneTransitionManager.LoadScene.Setting);
     }
 
     //「スキップ」ボタンが押されたときに実行される
