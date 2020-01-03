@@ -94,6 +94,7 @@ namespace Graph
         //AttachData()で自動的に呼び出される
         public List<IbikiGraph.Data> GetIbikiDatas()
         {
+            this.Start();
             //CSVから取得した睡眠データをIbikiGraph.Dataに変換して返す
             List<IbikiGraph.Data> resultList = new List<IbikiGraph.Data>();
             foreach (SleepData data in sleepDataList)
@@ -260,7 +261,7 @@ namespace Graph
         void AttachData()
         {
             UserDataManager.Scene.SaveGraphDate(sleepHeaderData.DateTime);
-            OnGraphDataChange.OnNext(Unit.Default); //データの変更を通知
+            OnGraphDataChange.OnNext(Unit.Default); //データの変更を通知            
         }
 
         /// <summary>

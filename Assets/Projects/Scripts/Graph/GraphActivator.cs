@@ -9,21 +9,22 @@ namespace Graph {
 	/// </summary>
 	public class GraphActivator : MonoBehaviour {
 
-		public Switcher graphTabSwitch;		//タブを切り替えるためのスイッチ
+		//public Switcher graphTabSwitch;		//タブを切り替えるためのスイッチ
 		public List<GameObject> BarGraphElements;
 		public List<GameObject> CircleGraphElements;
 
 		void Start () {
-			//前に開いていたタブを選択する
-			switch (UserDataManager.Scene.GetGraphTabType ()) {
-			case UserDataManager.Scene.GraphTabType.Time:
-				graphTabSwitch.Select (0);	//indexの数値はインスペクタの設定に依存
-				break;
-			case UserDataManager.Scene.GraphTabType.Aggregate:
-				graphTabSwitch.Select (1);	//indexの数値はインスペクタの設定に依存
-				break;
-			}
-		}
+            //前に開いていたタブを選択する
+            //switch (UserDataManager.Scene.GetGraphTabType())
+            //{
+            //    case UserDataManager.Scene.GraphTabType.Time:
+            //        graphTabSwitch.Select(0);   //indexの数値はインスペクタの設定に依存
+            //        break;
+            //    case UserDataManager.Scene.GraphTabType.Aggregate:
+            //        graphTabSwitch.Select(1);   //indexの数値はインスペクタの設定に依存
+            //        break;
+            //}
+        }
 
 		public void SetBarGraphActive () {
 			//タブの選択状態を記憶しておく

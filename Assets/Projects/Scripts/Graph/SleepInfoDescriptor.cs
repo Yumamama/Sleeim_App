@@ -187,7 +187,7 @@ public class SleepInfoDescriptor : MonoBehaviour {
             Data.SameDateNum,
             Data.CrossSunNum);
         foreach (var bedTimeText in BedTimeText) {
-            bedTimeText.text = TransTimeToHHMM(Data.BedTime);
+//            bedTimeText.text = TransTimeToHHMM(Data.BedTime);
         }
         foreach (var getUpTimeText in GetUpTimeText) {
             getUpTimeText.text = TransTimeToHHMM(Data.GetUpTime);

@@ -281,10 +281,7 @@ public class ProfileViewController : ViewControllerBase {
 			//すべての項目の設定を保存します
 			SaveAllField ();
 			//デバイスのペアリング準備画面に遷移する
-			//SceneTransitionManager.LoadLevel (SceneTransitionManager.LoadScene.BTConnectPrepare);
-
-			//Bluetooth接続画面へ遷移
-			SceneTransitionManager.LoadLevel(SceneTransitionManager.LoadScene.BTConnect);
+			SceneTransitionManager.LoadLevel (SceneTransitionManager.LoadScene.BTConnectPrepare);
 		} else {
 			//設定されてない項目がある場合ダイアログを表示する
 			StartCoroutine (TellExistUnSetItem ());

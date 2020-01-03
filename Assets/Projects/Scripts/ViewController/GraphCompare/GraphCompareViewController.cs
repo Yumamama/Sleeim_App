@@ -277,7 +277,7 @@ public class GraphCompareViewController : ViewControllerBase
             this.txtNoDataWeek.text = MSG_NO_DATA;
             this.lbChartTitle.text = MSG_RECENT_PART;
             for (int i = 0; i < barChartWeeks.Length; i++) {
-                barChartWeeks[i].drawBarChartWhenEmpty();
+                barChartWeeks[i].drawBarChartWhenEmpty();                       
                 barPercentWeeks[i].drawChartInfoWeekWhenEmpty();
             }
         }

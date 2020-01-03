@@ -34,7 +34,7 @@ namespace Kaimin.Common
         {
             string path = "";
 #if UNITY_EDITOR
-            path = Application.dataPath + "/../";
+            path = "/Users/kataokahiroshishin/Downloads/CSVPos";
 #else
             path = Application.persistentDataPath + "/";
 #endif
@@ -62,27 +62,30 @@ namespace Kaimin.Common
         /// <returns></returns>
         public static string[] GetAllFiles(string path, string extension)
         {
-			var db = MyDatabase.Instance;
+            var db = MyDatabase.Instance;
+            string[] path1 = new string[]{ "/Users/kataokahiroshishin/Downloads/20191105000011.csv" };
+            return path1;
 			if (db == null) {
 				return null;
 			} else {
-				var sleepTable = db.GetSleepTable ();
-				return sleepTable.SelectAllOrderByAsc ().Select (data => {
-					string dataPath = "";
-					//pathの最後にスラッシュがあれば、取り除く
-					path = ((path.Length - (path.LastIndexOf ('/') + 1)) == 0)
-						? path.Substring (0, path.Length - 1)
-						: path;
-					dataPath += path;
-					dataPath += "/";
-					//filePathの先頭にスラッシュがあれば、取り除く
-					string filePath = (data.file_path.IndexOf ('/') == 0)
-						? data.file_path.Substring (1)
-						: data.file_path;
-					dataPath += filePath;
-					return dataPath;
-				}).ToArray ();
-			}
+                var sleepTable = db.GetSleepTable();
+                return sleepTable.SelectAllOrderByAsc().Select(data =>
+                {
+                    string dataPath = "";
+                    //pathの最後にスラッシュがあれば、取り除く
+                    path = ((path.Length - (path.LastIndexOf('/') + 1)) == 0)
+                        ? path.Substring(0, path.Length - 1)
+                        : path;
+                    dataPath += path;
+                    dataPath += "/";
+                    //filePathの先頭にスラッシュがあれば、取り除く
+                    string filePath = (data.file_path.IndexOf('/') == 0)
+                        ? data.file_path.Substring(1)
+                        : data.file_path;
+                    dataPath += filePath;
+                    return dataPath;
+                }).ToArray();
+            }
         }
 
 		//睡眠データのファイルパスにある日付情報を解析して、DateTimeで返す

@@ -11,7 +11,7 @@ namespace Graph
     /// 呼吸のデータを受け取り、グラフに渡すためのクラス
     /// グラフに表示するためにデータの加工を行う
     /// </summary>
-    public class BreathGraph : MonoBehaviour, IGraphDataSwitch
+    public class BreathGraph : MonoBehaviour//, IGraphDataSwitch
     {
 
         public Color lineColor;						//折れ線グラフの色
@@ -39,12 +39,11 @@ namespace Graph
 
         void Awake()
         {
-            input = InputData.GetComponent<IBreathData>();
             InputData.OnGraphDataChange.Subscribe(_ =>
             {
-                //グラフに表示するデータが変更された際に実行される
+                input = InputData.GetComponent<IBreathData>();
                 //最新のデータを取得し、保持する
-                dataList = input.GetBreathDatas();			//異常データを取り除く
+                dataList = input.GetBreathDatas();
             });
         }
 
@@ -55,7 +54,6 @@ namespace Graph
         public class Data
         {
             Graph.Time time;	//検知した時間
-            float oxygenRate = 0;	//酸素量(0~100%) TODO: 使わない。消す
 
             /// <summary>
             /// 呼吸状態1
@@ -111,15 +109,6 @@ namespace Graph
             public Graph.Time GetTime()
             {
                 return this.time;
-            }
-
-            /// <summary>
-            /// 酸素量(0~100%)を取得します
-            /// </summary>
-            /// <returns>The oxygen rate.</returns>
-            public float GetOxygenRate()
-            {
-                return this.oxygenRate;
             }
 
             /// <summary>
@@ -229,10 +218,10 @@ namespace Graph
             RemoveBreathDataFromLineGraph();	//折れ線グラフ初期化
             RemoveBreathDataFromBarChart();	//バーグラフ初期化
             //ラベル・凡例を非表示
-            foreach (GameObject label in Label)
-            {
-                label.SetActive(false);
-            }
+            //foreach (GameObject label in Label)
+            //{
+            //    label.SetActive(false);
+            //}
             foreach (GameObject legend in Legend)
             {
                 legend.SetActive(false);
@@ -303,7 +292,6 @@ namespace Graph
             for (int i = 0; i < breathDataList.Count; i++)
             {
                 float xValueRate = Graph.Time.GetPositionRate(breathDataList[i].GetTime().Value, breathDataList.First().GetTime().Value, breathDataList.Last().GetTime().Value);
-                valueList.Add(new Vector2(xValueRate, breathDataList[i].GetOxygenRate()));
             }
             Output_Line.lineColor = lineColor;
             Output_Line.SetPointValues(valueList);

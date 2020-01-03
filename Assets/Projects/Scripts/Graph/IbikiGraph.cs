@@ -11,7 +11,7 @@ namespace Graph
     /// いびきのデータを受け取り、グラフに渡すためのクラス
     /// グラフに表示するためにデータの加工を行う
     /// </summary>
-    public class IbikiGraph : MonoBehaviour, IGraphDataSwitch
+    public class IbikiGraph : MonoBehaviour//, IGraphDataSwitch
     {
 
         public Color lineColor;					//折れ線グラフの色
@@ -43,12 +43,8 @@ namespace Graph
         void Awake()
         {
             input = InputData.GetComponent<IIbikiData>();
-            InputData.OnGraphDataChange.Subscribe(_ =>
-            {
-                //グラフに表示するデータが変更された際に実行される
-                //最新のデータを取得し、保持する
-                dataList = input.GetIbikiDatas();
-            });
+            //最新のデータを取得し、保持する
+            dataList = input.GetIbikiDatas();
         }
 
         /// <summary>
@@ -174,6 +170,11 @@ namespace Graph
             Output_AnalyzeTable.SetActive(true);
             //背景のいびきレベルを表示
             IbikiLebelBack.SetActive(true);
+
+
+            input = InputData.GetComponent<IIbikiData>();
+            //最新のデータを取得し、保持する
+            dataList = input.GetIbikiDatas();
 
             if (dataList != null)
             {
