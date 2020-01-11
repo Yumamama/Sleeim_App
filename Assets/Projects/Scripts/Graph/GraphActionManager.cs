@@ -8,16 +8,6 @@ namespace Graph {
 
 		public GraphDataSource graphDataSource;
 
-		void OnEnable () {
-			//タッチマネージャーのイベントリスナを設定
-			//TouchManager.Instance.FlickComplete += OnFlickComplete;
-		}
-
-		void OnDisable () {
-			//後処理
-			//TouchManager.Instance.FlickComplete -= OnFlickComplete;
-		}
-
 		void OnFlickComplete (object sender, FlickEventArgs e) {
 			string text = string.Format ("OnFlickComplete [{0}] Speed[{1}] Accel[{2}] ElapseTime[{3}]", new object[] {
 				e.Direction.ToString (),

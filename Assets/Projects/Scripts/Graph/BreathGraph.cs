@@ -217,11 +217,6 @@ namespace Graph
         {
             RemoveBreathDataFromLineGraph();	//折れ線グラフ初期化
             RemoveBreathDataFromBarChart();	//バーグラフ初期化
-            //ラベル・凡例を非表示
-            //foreach (GameObject label in Label)
-            //{
-            //    label.SetActive(false);
-            //}
             foreach (GameObject legend in Legend)
             {
                 legend.SetActive(false);
